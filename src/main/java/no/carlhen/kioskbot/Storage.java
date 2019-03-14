@@ -15,7 +15,7 @@ public class Storage {
 
     // Basic Storage Section
 
-    private static File BasePath = new File(System.getProperty("user.home") + "/.KantineBot");
+    private static File BasePath = new File(System.getProperty("user.home") + "/.KioskBot");
 
     @SuppressWarnings("unchecked")
     public static void SaveFile(String content, String fileName) {
