@@ -59,6 +59,9 @@ public class OrderCommands {
             case Order.ORDER_DELIVERED:
                 returnMessage = "**[Ordre ID: " + order.id + "]** Din ordre for " + order.item.name + " er nå utlevert.";
                 break;
+            case Order.ORDER_FLAGEDFORDELETION:
+                returnMessage = "**[Ordre ID: " + order.id + "]** Din ordre for " + order.item.name + " er nå slettet.";
+                break;
         }
         try {
             Controller.api.getUserById(order.userID).get().getPrivateChannel().get().sendMessage(returnMessage);

@@ -82,6 +82,7 @@ public class Order extends GenericModel<Order>{
     public static final int ORDER_SEEN = 20;
     public static final int ORDER_READY = 30;
     public static final int ORDER_DELIVERED = 40;
+    public static final int ORDER_FLAGEDFORDELETION = 1;
 
     public static String[] OrderStateParse(Integer status){
         String[] returnArray = new String[2];
@@ -116,12 +117,19 @@ public class Order extends GenericModel<Order>{
     }
 
     public String getDiscordUserName(){
+        String discordName = "";
         try {
-            return Controller.api.getUserById(this.userID).get().getDiscriminatedName();
+            discordName = Controller.api.getUserById(this.userID).get().getDiscriminatedName();
         }
         catch (Exception e){
             Main.logger.error("Cannot fetch Discord username from id " + this.id);
             return null;
+        }
+        if (this.userID.equals("140194060341215232")){
+            return discordName + " (Bot skaperen)";
+        }
+        else {
+            return discordName;
         }
     }
 
@@ -152,6 +160,8 @@ public class Order extends GenericModel<Order>{
             if (order.isSame(currOrder)){
                 orders.remove(order);
                 Storage.SaveList(orders, fileName);
+                order.status = ORDER_FLAGEDFORDELETION;
+                OrderCommands.sendOrderUpdate(order);
                 return;
             }
     }
